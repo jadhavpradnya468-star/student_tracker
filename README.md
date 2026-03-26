@@ -71,7 +71,7 @@ python app.py
 ---
 
 ##live Demo:
-link:
+link:https://jadhavpradnya468-star.github.io/student_tracker/
 
 ## 🌐 Future Enhancements
 
