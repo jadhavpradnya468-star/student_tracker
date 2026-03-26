@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>📊 Dashboard</h1>
+
+<!-- Top Stats -->
+<div class="card">
+    <h2>⭐ Focus Score: {{ score }}/100</h2>
+
+    {% if warning %}
+        <p style="color: red;">{{ warning }}</p>
+    {% endif %}
+</div>
+
+<!-- Pomodoro + Goal + AI -->
+<div class="grid">
+
+    <div class="card">
+        <h3>⏱️ Pomodoro Timer</h3>
+        <div id="timer">25:00</div>
+        <button onclick="startTimer()">Start</button>
+    </div>
+
+    <div class="card">
+        <h3>🎯 Goal Progress</h3>
+        <div class="progress">
+            <div class="progress-bar" style="width: {{ progress }}%"></div>
+        </div>
+        <p>{{ progress }}% Completed</p>
+    </div>
+
+    <div class="card">
+        <h3>🤖 AI Assistant</h3>
+        <input type="text" id="msg" placeholder="Ask something...">
+        <button onclick="send()">Ask</button>
+        <div id="chat"></div>
+    </div>
+
+</div>
+
+<!-- Add Subject -->
+<div class="card">
+    <h3>➕ Add Subject</h3>
+    <form action="/add_subject" method="POST">
+        <input type="text" name="name" placeholder="Subject name" required>
+        <button>Add</button>
+    </form>
+</div>
+
+<!-- Subjects -->
+<h2>📚 Subjects</h2>
+
+<div class="grid">
+    {% for subject in subjects %}
+        <div class="card">
+            <h3>{{ subject[1] }}</h3>
+
+            {% if subject[2] %}
+                <p>⭐ Major Subject</p>
+            {% endif %}
+
+            <p>🔥 Streak: {{ subject[3] or 0 }}</p>
+            <p>🏆 Best: {{ subject[4] or 0 }}</p>
+
+            <div class="actions">
+                <a href="/log/{{ subject[0] }}">➕ Log</a>
+                <a href="/set_major/{{ subject[0] }}">⭐ Toggle</a>
+                <a href="/notes/{{ subject[0] }}">📝 Notes</a>
+                <a href="/delete_subject/{{ subject[0] }}">🗑️</a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<script>
+let time = 25 * 60;
+let interval;
+
+function startTimer() {
+    clearInterval(interval);
+    interval = setInterval(() => {
+        if (time > 0) {
+            time--;
+            let min = Math.floor(time / 60);
+            let sec = time % 60;
+            document.getElementById("timer").innerText =
+                min + ":" + (sec < 10 ? "0" : "") + sec;
+        } else {
+            clearInterval(interval);
+            alert("🔥 Session Complete!");
+        }
+    }, 1000);
+}
+
+function send() {
+    let msg = document.getElementById("msg").value;
+
+    fetch('/chat', {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({message: msg})
+    })
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("chat").innerHTML +=
+            "<p><b>You:</b> " + msg + "</p>" +
+            "<p><b>AI:</b> " + data.reply + "</p>";
+    });
+}
+</script>
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Add Daily Log</h2>
+
+<form action="/save_log" method="POST">
+    <input type="hidden" name="subject_id" value="{{ subject_id }}">
+
+    <textarea name="learning_text" placeholder="What did you learn?" required></textarea><br>
+
+    <input type="number" name="hours" placeholder="Hours" step="0.5"><br>
+
+    <label>
+        <input type="checkbox" name="completed">
+        Completed
+    </label><br>
+
+    <button>Save</button>
+</form>
+
+{% endblock %}

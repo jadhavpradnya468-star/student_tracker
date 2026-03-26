@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>📊 Study Hours</h2>
+
+<canvas id="myChart"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    fetch('/graph_data')
+    .then(res => res.json())
+    .then(data => {
+    
+        if (data.dates.length === 0) {
+            document.getElementById("chart").outerHTML =
+                "<p>No data available for analytics 📭</p>";
+            return;
+        }
+    
+        const ctx = document.getElementById('chart').getContext('2d');
+    
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: data.dates,
+                datasets: [{
+                    label: 'Study Hours',
+                    data: data.hours,
+                    tension: 0.4,   // smooth curve
+                    fill: true
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    
+    });
+</script>
+<h2>📅 Study Heatmap</h2>
+<div id="heatmap"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/cal-heatmap/dist/cal-heatmap.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cal-heatmap/dist/cal-heatmap.css">
+
+<script>
+fetch('/heatmap_data')
+.then(res => res.json())
+.then(data => {
+    const cal = new CalHeatmap();
+    cal.paint({
+        data: {
+            source: data,
+            x: "date",
+            y: "hours"
+        },
+        date: { start: new Date() },
+        range: 1,
+        scale: {
+            color: {
+                type: "linear",
+                scheme: "blues"
+            }
+        }
+    });
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>📝 Tasks</h2>
+
+<form action="/add_task" method="POST">
+    <input type="text" name="task" placeholder="Enter task" required>
+    <button>Add</button>
+</form>
+
+<ul>
+    {% for task in tasks %}
+    <div class="card">
+        {% if task[3] %}
+            <s>{{ task[1] }}</s>
+        {% else %}
+            {{ task[1] }}
+        {% endif %}
+
+        <a href="/complete_task/{{ task[0] }}">✅</a>
+        <a href="/delete_task/{{ task[0] }}">🗑️</a>
+    </div>
+    {% endfor %}
+</ul>
+
+{% endblock %}

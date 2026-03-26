@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>🚀 Tracker</h2>
+        <a href="/">🏠 Dashboard</a>
+        <a href="/tasks">📝 Tasks</a>
+        <a href="/graph">📊 Analytics</a>
+        <a href="/insights">🧠 Insights</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main">
+        {% block content %}{% endblock %}
+    </div>
+
+</div>
+
+</body>
+</html>

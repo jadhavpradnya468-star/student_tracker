@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>📝 Notes</h2>
+
+<form method="POST" action="/add_note">
+    <input type="hidden" name="subject_id" value="{{ subject_id }}">
+    <textarea name="content"></textarea>
+    <button>Add</button>
+</form>
+
+<ul>
+    {% for n in notes %}
+        <li>{{ n[2] }}</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
