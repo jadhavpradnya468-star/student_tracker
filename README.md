@@ -1,3 +1,4 @@
+
 # 📊 Student Tracker App
 
 A powerful Student Productivity Tracker built using Flask, MySQL, HTML, CSS, and JavaScript.
