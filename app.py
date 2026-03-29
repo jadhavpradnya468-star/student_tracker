@@ -2,15 +2,17 @@ from datetime import date, timedelta
 from flask import Flask, render_template, request, redirect, jsonify, session
 from flask_mysqldb import MySQL
 import bcrypt
+import config
 
 app = Flask(__name__)
-app.secret_key = "secret123"
+app.secret_key = config.SECRET_KEY
 
-# MySQL Config
-app.config['MYSQL_HOST'] = '127.0.0.1'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Pass@123'
-app.config['MYSQL_DB'] = 'student_tracker'
+# MySQL Config from environment variables
+app.config['MYSQL_HOST'] = config.MYSQL_HOST
+app.config['MYSQL_PORT'] = int(config.MYSQL_PORT)
+app.config['MYSQL_USER'] = config.MYSQL_USER
+app.config['MYSQL_PASSWORD'] = config.MYSQL_PASSWORD
+app.config['MYSQL_DB'] = config.MYSQL_DB
 
 mysql = MySQL(app)
 
